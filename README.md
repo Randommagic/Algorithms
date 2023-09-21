@@ -1,3 +1,3 @@
 # Algorithms
-알고리즘 스터디, 어느정도 난이도를 가진  ( 백준 골드 3 이상 ) 문제들 업로드
+백준허브 https://github.com/BaekjoonHub/BaekjoonHub 를 사용하여 푼 알고리즘 코드 repo 입니다.
 

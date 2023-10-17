@@ -21,7 +21,13 @@ void joinGroup(int a, int b) {
 }
 
 struct cmp {
-    bool operator()(const vector<int> &a, const vector<int> &b) { return a[2] <= b[2]; }
+    bool operator()(const vector<int> &a, const vector<int> &b) {
+        if (a[2] != b[2])
+            return a[2] < b[2];
+        if (a[1] != b[1])
+            return a[1] < b[1];
+        return a[0] < b[0];
+    }
 };
 
 int main() {
@@ -40,17 +46,18 @@ int main() {
     while (E-- > 0) {
         int a, b, c;
         cin >> a >> b >> c;
-        edges.push_back({c,a, b});
+        edges.push_back({a, b, c});
     }
-    sort(edges.begin(), edges.end());
+    sort(edges.begin(), edges.end(), cmp());
 
     int cnt = 0, ans = 0;
 
     for (const auto &edge : edges) {
-        if (getGroup(edge[1]) == getGroup(edge[2]))
+        if (getGroup(edge[0]) == getGroup(edge[1]))
             continue;
-        joinGroup(edge[1], edge[2]);
-        ans += edge[0];
+        joinGroup(edge[0], edge[1]);
+        ans += edge[2];
+        cnt++;
         if (cnt == V - 1)
             break;
     }

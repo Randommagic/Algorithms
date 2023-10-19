@@ -21,13 +21,7 @@ void joinGroup(int a, int b) {
 }
 
 struct cmp {
-    bool operator()(const vector<int> &a, const vector<int> &b) {
-        if (a[2] != b[2])
-            return a[2] < b[2];
-        if (a[1] != b[1])
-            return a[1] < b[1];
-        return a[0] < b[0];
-    }
+    bool operator()(const vector<int> &a, const vector<int> &b) { return a[2] < b[2]; }
 };
 
 int main() {

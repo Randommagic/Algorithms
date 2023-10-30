@@ -1,65 +1,52 @@
 #include <iostream>
-#include <vector>
-#include <queue>
 #include <map>
-#define MAX 99999999
+#include <queue>
+#include <vector>
+#define MAX 9999999
 using namespace std;
 
-class dijkstra{
-private:
-    vector<map<int,int>> edges;
-    vector<int> dist;
-    int numOfNode, numOfEdge, startNode;
-public:
-    dijkstra(int numOfNode, int numOfEdge, int startNode){
-        this->numOfNode = numOfNode;
-        this->numOfEdge = numOfEdge;
-        this->startNode = startNode;
-        edges.resize(numOfNode+1);
-        dist.resize(numOfNode+1,MAX);
-    }
-    void inputEdge(int st, int end, int dist){
-        if(edges[st].find(end) != edges[st].end()){
-            if(edges[st][end] > dist)
-                edges[st][end] = dist;
-        }
-        else edges[st].insert(make_pair(end,dist));
-    }
-    void solve(){
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq; // dist , node
-        dist[startNode] = 0;
-        pq.push(make_pair(dist[startNode],startNode));
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-        while(!pq.empty()){
-            int pqNode = pq.top().second;
-            int psDist = pq.top().first;
-            pq.pop();
+    int V, E, start;
+    cin >> V >> E >> start;
 
-            for(auto iter = edges[pqNode].begin(); iter != edges[pqNode].end();iter++){
-                int nextNode = iter->first;
-                int nextDist = iter->second;
-                if(dist[nextNode] > dist[pqNode] + nextDist){
-                    dist[nextNode] = dist[pqNode] + nextDist;
-                    pq.push(make_pair(dist[nextNode],nextNode));
-                }
+    vector<map<int, int>> edge(V + 1);
+    vector<int> dist(V + 1, MAX);
+    while (E-- > 0) {
+        int a, b, c;
+        cin >> a >> b >> c;
+        if (edge[a].find(b) == edge[a].end())
+            edge[a][b] = MAX;
+        edge[a][b] = std::min(c, edge[a][b]);
+    }
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
+
+    dist[start] = 0;
+    pq.push({dist[start], start});
+
+    while (!pq.empty()) {
+        int qn = pq.top().second;
+        pq.pop();
+
+        for (const auto &nextNode : edge[qn]) {
+            int nextn = nextNode.first;
+            int nextd = nextNode.second;
+
+            if (dist[nextn] > dist[qn] + nextd) {
+                dist[nextn] = dist[qn] + nextd;
+                pq.push({dist[nextn], nextn});
             }
         }
-        for(int i =1 ; i <= numOfNode; i++){
-            dist[i] >=MAX? cout << "INF" : cout << dist[i];
-            cout << "\n";
-        }
     }
-};
 
-
-int main(){
-    int numOfNode, numOfEdge, startNode;
-    int start, end, dist;
-    cin >> numOfNode >> numOfEdge >> startNode;
-    dijkstra di(numOfNode,numOfEdge,startNode);
-    while(numOfEdge--){
-        cin >> start >> end >> dist;
-        di.inputEdge(start,end,dist);
+    for (int i = 1; i <= V; i++) {
+        if (dist[i] == MAX)
+            cout << "INF\n";
+        else
+            cout << dist[i] << "\n";
     }
-    di.solve();
 }

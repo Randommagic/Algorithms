@@ -1,3 +1,6 @@
+// 틀렸던 이유.   dist를 long long으로 하지 않고 int로 선언함.
+// V가 500, E가 6000, 모든 edge가 -10000일때, 1->2로 -10000, 2->1로 -20000.... 해서 int범위를 초과할수있음.
+
 #include <iostream>
 #include <vector>
 #define MAX 99999999
